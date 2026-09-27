@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{from_phone}}&message_text=I want to see a dentist"
+method: POST
+queryParams:
+  from_phone: "{{from_phone}}"
+  message_text: I want to see a dentist
+order: 1000

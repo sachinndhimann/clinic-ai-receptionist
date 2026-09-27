@@ -1,0 +1,11 @@
+# Use this workspace to collaborate
+workspace:
+  id: 16e3ec4e-c710-47e2-85fd-f5c4a11a9105
+
+localResources:
+  collections:
+    - ../clinic-ai-receptionist.postman_collection.json
+
+cloudResources:
+  collections:
+    ../postman/collections/Clinic AI Receptionist - Demo: a21cbbdb-2c97-498e-b05d-d19204657026

@@ -1,0 +1,9 @@
+$kind: http-request
+name: Step 3 - Pick a time slot (check console/reply for options first)
+description: The exact time must match one of the options the bot just offered in Step 2's reply. Edit the message_text query param if the offered slots differ.
+url: "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{from_phone}}&message_text=2pm"
+method: POST
+queryParams:
+  from_phone: "{{from_phone}}"
+  message_text: 2pm
+order: 3000

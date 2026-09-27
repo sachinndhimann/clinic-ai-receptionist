@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{base_url}}/staff/conversations/{{conversation_id}}/reply?body=Hi, this is the front desk - a doctor will call you back shortly."
+method: POST
+queryParams:
+  body: Hi, this is the front desk - a doctor will call you back shortly.
+order: 3000

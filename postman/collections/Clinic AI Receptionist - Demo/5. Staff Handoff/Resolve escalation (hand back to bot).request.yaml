@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{base_url}}/staff/conversations/{{conversation_id}}/resolve"
+method: POST
+order: 4000

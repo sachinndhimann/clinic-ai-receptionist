@@ -1,0 +1,8 @@
+$kind: http-request
+description: Should escalate to staff by default rather than the bot attempting to placate the patient.
+url: "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{complaint_phone}}&message_text=this is ridiculous, my last visit was awful"
+method: POST
+queryParams:
+  from_phone: "{{complaint_phone}}"
+  message_text: this is ridiculous, my last visit was awful
+order: 1000

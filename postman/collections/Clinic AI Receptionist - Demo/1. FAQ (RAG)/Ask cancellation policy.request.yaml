@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{from_phone}}&message_text=What is your cancellation policy?"
+method: POST
+queryParams:
+  from_phone: "{{from_phone}}"
+  message_text: What is your cancellation policy?
+order: 2000

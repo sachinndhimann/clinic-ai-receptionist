@@ -1,0 +1,8 @@
+$kind: http-request
+description: Should be caught by the deterministic keyword filter before any LLM call, with status 'escalated_emergency' in the response.
+url: "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{emergency_phone}}&message_text=I'm having chest pain"
+method: POST
+queryParams:
+  from_phone: "{{emergency_phone}}"
+  message_text: I'm having chest pain
+order: 1000

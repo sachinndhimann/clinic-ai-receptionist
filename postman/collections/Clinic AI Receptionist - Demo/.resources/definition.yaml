@@ -1,0 +1,9 @@
+$kind: collection
+description: "Demo flow: FAQ (RAG) -> full booking flow -> emergency escalation -> complaint escalation -> staff handoff. Run requests top to bottom within each folder. Uses {{from_phone}} consistently so the booking flow requests share one conversation."
+variables:
+  base_url: http://localhost:8000
+  clinic_slug: demo-dental-001
+  from_phone: "+919999999999"
+  complaint_phone: "+919888888888"
+  emergency_phone: "+919777777777"
+  conversation_id: ""

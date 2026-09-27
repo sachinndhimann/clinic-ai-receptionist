@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{base_url}}/staff/escalations"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      const items = pm.response.json();
+      if (items && items.length > 0) {
+        pm.collectionVariables.set('conversation_id', items[0].conversation_id);
+      }
+    language: text/javascript
+order: 1000

@@ -1,0 +1,33 @@
+{
+  "clinic_id": "demo-dental-001",
+  "name": "Smile Care Dental Clinic",
+  "specialty": "dental",
+  "languages": ["en", "hi", "pa"],
+  "whatsapp_number": "+91XXXXXXXXXX",
+  "timezone": "Asia/Kolkata",
+  "working_hours": {
+    "mon_fri": "09:00-19:00",
+    "sat": "09:00-14:00",
+    "sun": "closed"
+  },
+  "emergency_contact": "+91XXXXXXXXXX",
+  "doctors": [
+    {
+      "doctor_id": "dr-mehta",
+      "name": "Dr. Anjali Mehta",
+      "specialty": "General Dentistry, Root Canal",
+      "slot_duration_minutes": 30
+    },
+    {
+      "doctor_id": "dr-singh",
+      "name": "Dr. Rajveer Singh",
+      "specialty": "Orthodontics",
+      "slot_duration_minutes": 45
+    }
+  ],
+  "services": [
+    { "name": "Consultation", "price_inr": 300 },
+    { "name": "Root Canal", "price_inr": 6000 },
+    { "name": "Teeth Cleaning", "price_inr": 800 }
+  ]
+}

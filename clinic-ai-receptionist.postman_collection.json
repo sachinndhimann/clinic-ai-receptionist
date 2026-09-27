@@ -1,0 +1,257 @@
+{
+  "info": {
+    "name": "Clinic AI Receptionist - Demo",
+    "description": "Demo flow: FAQ (RAG) -> full booking flow -> emergency escalation -> complaint escalation -> staff handoff. Run requests top to bottom within each folder. Uses {{from_phone}} consistently so the booking flow requests share one conversation.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "clinic_slug", "value": "demo-dental-001" },
+    { "key": "from_phone", "value": "+919999999999" },
+    { "key": "complaint_phone", "value": "+919888888888" },
+    { "key": "emergency_phone", "value": "+919777777777" },
+    { "key": "conversation_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. FAQ (RAG)",
+      "item": [
+        {
+          "name": "Ask clinic hours",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{from_phone}}&message_text=What are your clinic hours?",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "whatsapp", "{{clinic_slug}}"],
+              "query": [
+                { "key": "from_phone", "value": "{{from_phone}}" },
+                { "key": "message_text", "value": "What are your clinic hours?" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ask cancellation policy",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{from_phone}}&message_text=What is your cancellation policy?",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "whatsapp", "{{clinic_slug}}"],
+              "query": [
+                { "key": "from_phone", "value": "{{from_phone}}" },
+                { "key": "message_text", "value": "What is your cancellation policy?" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Booking Flow",
+      "item": [
+        {
+          "name": "Step 1 - Start booking (specialty)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{from_phone}}&message_text=I want to see a dentist",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "whatsapp", "{{clinic_slug}}"],
+              "query": [
+                { "key": "from_phone", "value": "{{from_phone}}" },
+                { "key": "message_text", "value": "I want to see a dentist" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Step 2 - Give date",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{from_phone}}&message_text=tomorrow",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "whatsapp", "{{clinic_slug}}"],
+              "query": [
+                { "key": "from_phone", "value": "{{from_phone}}" },
+                { "key": "message_text", "value": "tomorrow" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Step 3 - Pick a time slot (check console/reply for options first)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{from_phone}}&message_text=2pm",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "whatsapp", "{{clinic_slug}}"],
+              "query": [
+                { "key": "from_phone", "value": "{{from_phone}}" },
+                { "key": "message_text", "value": "2pm" }
+              ]
+            },
+            "description": "The exact time must match one of the options the bot just offered in Step 2's reply. Edit the message_text query param if the offered slots differ."
+          }
+        },
+        {
+          "name": "Step 4 - Give patient name",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{from_phone}}&message_text=Rohit Kumar",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "whatsapp", "{{clinic_slug}}"],
+              "query": [
+                { "key": "from_phone", "value": "{{from_phone}}" },
+                { "key": "message_text", "value": "Rohit Kumar" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Step 5 - Confirm (yes)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{from_phone}}&message_text=yes",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "whatsapp", "{{clinic_slug}}"],
+              "query": [
+                { "key": "from_phone", "value": "{{from_phone}}" },
+                { "key": "message_text", "value": "yes" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Emergency Escalation",
+      "item": [
+        {
+          "name": "Send emergency keyword message",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{emergency_phone}}&message_text=I'm having chest pain",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "whatsapp", "{{clinic_slug}}"],
+              "query": [
+                { "key": "from_phone", "value": "{{emergency_phone}}" },
+                { "key": "message_text", "value": "I'm having chest pain" }
+              ]
+            },
+            "description": "Should be caught by the deterministic keyword filter before any LLM call, with status 'escalated_emergency' in the response."
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Complaint Escalation",
+      "item": [
+        {
+          "name": "Send complaint message",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/webhooks/whatsapp/{{clinic_slug}}?from_phone={{complaint_phone}}&message_text=this is ridiculous, my last visit was awful",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "whatsapp", "{{clinic_slug}}"],
+              "query": [
+                { "key": "from_phone", "value": "{{complaint_phone}}" },
+                { "key": "message_text", "value": "this is ridiculous, my last visit was awful" }
+              ]
+            },
+            "description": "Should escalate to staff by default rather than the bot attempting to placate the patient."
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Staff Handoff",
+      "item": [
+        {
+          "name": "List escalations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const items = pm.response.json();",
+                  "if (items && items.length > 0) {",
+                  "  pm.collectionVariables.set('conversation_id', items[0].conversation_id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/staff/escalations",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "escalations"]
+            }
+          },
+          "description": "Auto-captures the first escalated conversation_id into the collection variable for the next requests."
+        },
+        {
+          "name": "View transcript",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/staff/conversations/{{conversation_id}}/messages",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "conversations", "{{conversation_id}}", "messages"]
+            }
+          }
+        },
+        {
+          "name": "Staff sends a reply",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/staff/conversations/{{conversation_id}}/reply?body=Hi, this is the front desk - a doctor will call you back shortly.",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "conversations", "{{conversation_id}}", "reply"],
+              "query": [
+                { "key": "body", "value": "Hi, this is the front desk - a doctor will call you back shortly." }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Resolve escalation (hand back to bot)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/staff/conversations/{{conversation_id}}/resolve",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "conversations", "{{conversation_id}}", "resolve"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "GET /health",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
